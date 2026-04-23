@@ -1,0 +1,221 @@
+name: Release Desktop Clients
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version (for example: 0.1.0 or v0.1.0)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Prepare Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - name: Enforce Main Branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF}" != "refs/heads/main" ]]; then
+            echo "::error::This workflow only supports the main branch. Current ref: ${GITHUB_REF}"
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Normalize and Validate Version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          INPUT_VERSION="${{ github.event.inputs.version }}"
+          VERSION="${INPUT_VERSION#v}"
+
+          if [[ -z "${VERSION}" ]]; then
+            echo "::error::Version input cannot be empty."
+            exit 1
+          fi
+
+          if ! [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Invalid version '${INPUT_VERSION}'. Use semver such as 0.2.0 or v0.2.0."
+            exit 1
+          fi
+
+          FRONTEND_VERSION="$(sed -n "s/^export const APP_VERSION = '\(.*\)';$/\1/p" frontend/src/version.ts)"
+          if [[ -z "${FRONTEND_VERSION}" ]]; then
+            echo "::error::Unable to read APP_VERSION from frontend/src/version.ts."
+            exit 1
+          fi
+
+          if [[ "${FRONTEND_VERSION}" != "${VERSION}" ]]; then
+            echo "::error::Version mismatch. Input=${VERSION}, frontend/src/version.ts=${FRONTEND_VERSION}."
+            exit 1
+          fi
+
+          TAG="v${VERSION}"
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+          echo "Release version: ${VERSION}"
+          echo "Release tag: ${TAG}"
+
+  build:
+    name: Build ${{ matrix.label }}
+    needs: prepare
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macOS amd64
+            runner: macos-13
+            platform: darwin/amd64
+            goos: darwin
+            goarch: amd64
+          - label: macOS arm64
+            runner: macos-14
+            platform: darwin/arm64
+            goos: darwin
+            goarch: arm64
+          - label: Windows amd64
+            runner: windows-latest
+            platform: windows/amd64
+            goos: windows
+            goarch: amd64
+          - label: Linux amd64
+            runner: ubuntu-22.04
+            platform: linux/amd64
+            goos: linux
+            goarch: amd64
+    env:
+      RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+      WAILS_VERSION: v2.12.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Linux Build Dependencies
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev
+
+      - name: Install Wails CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          go install github.com/wailsapp/wails/v2/cmd/wails@${WAILS_VERSION}
+          echo "$(go env GOPATH)/bin" >> "${GITHUB_PATH}"
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Wails App
+        shell: bash
+        run: |
+          set -euo pipefail
+          wails build -clean -platform "${{ matrix.platform }}" -o cc-archive
+
+      - name: Package macOS Artifact
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_PATH="build/bin/cc-archive.app"
+          if [[ ! -d "${APP_PATH}" ]]; then
+            echo "::error::Expected app bundle not found: ${APP_PATH}"
+            exit 1
+          fi
+          PACKAGE_NAME="cc-archive_${RELEASE_VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip"
+          ditto -c -k --sequesterRsrc --keepParent "${APP_PATH}" "${PACKAGE_NAME}"
+          echo "PACKAGE_NAME=${PACKAGE_NAME}" >> "${GITHUB_ENV}"
+
+      - name: Package Windows Artifact
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $exePath = "build/bin/cc-archive.exe"
+          if (!(Test-Path $exePath)) { throw "Expected executable not found: $exePath" }
+          $packageName = "cc-archive_${env:RELEASE_VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip"
+          Compress-Archive -Path $exePath -DestinationPath $packageName -Force
+          "PACKAGE_NAME=$packageName" >> $env:GITHUB_ENV
+
+      - name: Package Linux Artifact
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          BIN_PATH="build/bin/cc-archive"
+          if [[ ! -f "${BIN_PATH}" ]]; then
+            echo "::error::Expected executable not found: ${BIN_PATH}"
+            exit 1
+          fi
+          chmod +x "${BIN_PATH}"
+          PACKAGE_NAME="cc-archive_${RELEASE_VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.tar.gz"
+          tar -czf "${PACKAGE_NAME}" -C build/bin cc-archive
+          echo "PACKAGE_NAME=${PACKAGE_NAME}" >> "${GITHUB_ENV}"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.goos }}-${{ matrix.goarch }}
+          path: ${{ env.PACKAGE_NAME }}
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs:
+      - prepare
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Show Artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          ls -R dist
+
+      - name: Create or Update Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          name: CC Archive ${{ needs.prepare.outputs.tag }}
+          generate_release_notes: true
+          prerelease: ${{ contains(needs.prepare.outputs.version, '-') }}
+          fail_on_unmatched_files: true
+          files: |
+            dist/**/*.zip
+            dist/**/*.tar.gz

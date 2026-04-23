@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">CC Archive Logo</title>
+  <desc id="desc">Interlocking double-C symbol in sage green tones.</desc>
+  <g fill="none" stroke-linecap="round" stroke-width="118">
+    <path d="M 635 369 A 250 250 0 1 0 635 655" stroke="#3f5f4d"/>
+    <path d="M 799 369 A 250 250 0 1 0 799 655" stroke="#789b80"/>
+  </g>
+</svg>

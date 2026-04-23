@@ -1,20 +1,29 @@
 # CC Archive
 
-[![GitHub Stars](https://img.shields.io/github/stars/MonteCarloM/cc-archive?style=flat-square)](https://github.com/MonteCarloM/cc-archive/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/MonteCarloM/cc-archive?style=flat-square)](https://github.com/MonteCarloM/cc-archive/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/MonteCarloM/cc-archive?style=flat-square)](https://github.com/MonteCarloM/cc-archive/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/MonteCarloM/cc-archive?style=flat-square)](https://github.com/MonteCarloM/cc-archive/commits/main)
+[![GitHub Stars](https://img.shields.io/github/stars/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/commits/main)
 [![Go](https://img.shields.io/badge/Go-1.23%2B-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev/)
 [![Wails](https://img.shields.io/badge/Wails-v2.12-0CA5E9?style=flat-square)](https://wails.io/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MonteCarloM/cc-archive/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/chunxue-ai/cc-archive/pulls)
 
-[English](README.md) | 简体中文 | [日本語](README.ja.md)
+<p align="center">
+  <a href="README.md" title="English">🇺🇸</a>
+  <a href="README.zh-CN.md" title="简体中文">🇨🇳</a>
+  <a href="README.ja.md" title="日本語">🇯🇵</a>
+</p>
 
 <p align="center">
   <img src="docs/assets/cc-archive-logo.png" alt="CC Archive Logo" width="180" />
 </p>
 
 CC Archive 是一个基于 Wails 的桌面应用（Go + React/TypeScript），用于在 Claude Code 与 Codex 工作流之间导出和管理记忆/会话数据。
+
+## GIF 预览
+
+<!-- 替换为简体中文 GIF -->
+![简体中文 GIF 占位](docs/assets/preview-zh-CN.gif)
 
 ## 当前功能（v1）
 
@@ -68,14 +77,3 @@ cd frontend && npm run build
 ```bash
 wails build
 ```
-
-## 发布（GitHub Actions）
-
-仓库已内置 `.github/workflows/release.yml`，用于按版本号执行多平台自动发布。
-
-1. 在 GitHub Actions 中运行 `Release Desktop Clients`。
-2. 输入 `version`，支持 `0.1.0` 或 `v0.1.0`。
-3. 工作流会自动：
-   - 校验 `frontend/src/version.ts` 的版本与输入版本一致
-   - 构建 `macOS (amd64/arm64)`、`Windows (amd64)`、`Linux (amd64)` 客户端
-   - 打包产物并发布到 GitHub Release（tag 为 `v<version>`）

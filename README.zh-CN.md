@@ -11,9 +11,9 @@
 </p>
 
 <p align="center">
-  <a href="README.md" title="English">🇺🇸</a>
-  <a href="README.zh-CN.md" title="简体中文">🇨🇳</a>
-  <a href="README.ja.md" title="日本語">🇯🇵</a>
+  <a href="README.md" title="English"><img alt="English" src="https://img.shields.io/badge/Docs-English-00ADD8?style=flat-square&logo=googletranslate&logoColor=white" /></a>
+  <a href="README.zh-CN.md" title="简体中文"><img alt="简体中文" src="https://img.shields.io/badge/Docs-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-00ADD8?style=flat-square&logo=googletranslate&logoColor=white" /></a>
+  <a href="README.ja.md" title="日本語"><img alt="日本語" src="https://img.shields.io/badge/Docs-%E6%97%A5%E6%9C%AC%E8%AA%9E-00ADD8?style=flat-square&logo=googletranslate&logoColor=white" /></a>
 </p>
 
 <p align="center">

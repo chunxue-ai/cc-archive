@@ -1,13 +1,13 @@
 <h1 align="center">CC Archive</h1>
 
 <p align="center">
-[![GitHub Stars](https://img.shields.io/github/stars/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/chunxue-ai/cc-archive?style=flat-square)](https://github.com/chunxue-ai/cc-archive/commits/main)
-[![Go](https://img.shields.io/badge/Go-1.23%2B-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev/)
-[![Wails](https://img.shields.io/badge/Wails-v2.12-0CA5E9?style=flat-square)](https://wails.io/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/chunxue-ai/cc-archive/pulls)
+  <a href="https://github.com/chunxue-ai/cc-archive/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/chunxue-ai/cc-archive?style=flat-square" /></a>
+  <a href="https://github.com/chunxue-ai/cc-archive/network/members"><img alt="GitHub Forks" src="https://img.shields.io/github/forks/chunxue-ai/cc-archive?style=flat-square" /></a>
+  <a href="https://github.com/chunxue-ai/cc-archive/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/chunxue-ai/cc-archive?style=flat-square" /></a>
+  <a href="https://github.com/chunxue-ai/cc-archive/commits/main"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/chunxue-ai/cc-archive?style=flat-square" /></a>
+  <a href="https://go.dev/"><img alt="Go" src="https://img.shields.io/badge/Go-1.23%2B-00ADD8?style=flat-square&logo=go&logoColor=white" /></a>
+  <a href="https://wails.io/"><img alt="Wails" src="https://img.shields.io/badge/Wails-v2.12-0CA5E9?style=flat-square" /></a>
+  <a href="https://github.com/chunxue-ai/cc-archive/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" /></a>
 </p>
 
 <p align="center">

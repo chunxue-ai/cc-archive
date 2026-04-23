@@ -20,41 +20,64 @@
   <img src="docs/assets/cc-archive-logo.png" alt="CC Archive Logo" width="180" />
 </p>
 
-CC Archive is a Wails desktop app (Go + React/TypeScript) for exporting and managing memory/session data between Claude Code and Codex workflows.
+<p align="center">
+  <strong>Portable backup and migration for Claude Code sessions.</strong><br/>
+  Scan local conversations, review what will be exported, and create restore-ready packages in a few clicks.
+</p>
 
 ## GIF Preview
 
 <!-- Replace this with your English GIF -->
 ![English GIF Placeholder](docs/assets/preview-en.gif)
 
-## Current features (v1)
+## Why CC Archive
 
-- i18n-ready dashboard UI (`en`, `zh-CN`)
-- Claude Code local session scan (`~/.claude/projects/**/*.jsonl`)
-- Safe export planning (preview mode)
-- Full export package generation with:
-  - `manifest.json`
-  - `checksums.sha256`
-  - copied session files under `claude-code/projects/...`
-- Restore flow (best effort) from an export package back to local Claude Code storage
+- Built for everyday users who want a simple desktop workflow.
+- No manual file hunting across hidden folders.
+- Create organized export packages you can move between machines and workspaces.
+- Keep control of your own data with local-first processing.
 
-## Storage model
+## Quick Start (No CLI Required)
+
+1. Open CC Archive.
+2. Click `Scan` to discover local Claude Code sessions.
+3. Review the detected sessions and click `Export`.
+4. Send the generated package to the target machine or account workspace.
+5. Use `Import Workspace` or `Restore` to bring data back.
+
+## What Happens to Your Data
+
+- Session discovery and packaging run locally on your machine.
+- `Preview` mode lets you check what will happen before writing files.
+- Export packages are saved to `~/.cc-archive/exports` by default.
+- CC Archive does not require a cloud upload step.
+
+## What Is Inside an Export Package
+
+- `manifest.json`: package summary and metadata.
+- `checksums.sha256`: integrity checks for exported files.
+- `claude-code/projects/...`: copied session files in a portable structure.
+
+## Current Capabilities
+
+- Multi-language desktop UI (`en`, `zh-CN`).
+- Claude Code local session scan (`~/.claude/projects/**/*.jsonl`).
+- Preview-first export workflow.
+- Restore workflow from an exported package.
+
+## Known Limit
+
+CC Archive works with local Claude Code session files. Importing chat history directly into another Claude account is not officially supported by Anthropic.
+
+## Optional Advanced Settings
 
 - Default archive root: `~/.cc-archive`
 - Default exports directory: `~/.cc-archive/exports`
 - Export folder format: `YYYYMMDDTHHMMSSZ_<uuid>`
-
-You can override paths with environment variables:
-
 - `CC_ARCHIVE_HOME`: custom archive root
-- `CLAUDE_CONFIG_DIR`: custom Claude config root (sessions expected under `<CLAUDE_CONFIG_DIR>/projects`)
+- `CLAUDE_CONFIG_DIR`: custom Claude config root (`<CLAUDE_CONFIG_DIR>/projects`)
 
-## Official support boundary
-
-CC Archive exports and restores local Claude Code session files.  
-Importing chat history into another Claude account is not officially supported by Anthropic at this time.
-
-## Development
+## For Developers
 
 Run in development mode:
 

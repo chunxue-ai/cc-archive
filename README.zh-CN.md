@@ -20,41 +20,64 @@
   <img src="docs/assets/cc-archive-logo.png" alt="CC Archive Logo" width="180" />
 </p>
 
-CC Archive 是一个基于 Wails 的桌面应用（Go + React/TypeScript），用于在 Claude Code 与 Codex 工作流之间导出和管理记忆/会话数据。
+<p align="center">
+  <strong>为 Claude Code 会话提供可迁移的本地备份方案。</strong><br/>
+  扫描本地对话，先预览再导出，几步即可生成可恢复的归档包。
+</p>
 
 ## GIF 预览
 
 <!-- 替换为简体中文 GIF -->
 ![简体中文 GIF 占位](docs/assets/preview-zh-CN.gif)
 
-## 当前功能（v1）
+## 为什么选择 CC Archive
 
-- 支持国际化的仪表盘界面（`en`、`zh-CN`）
-- 扫描本地 Claude Code 会话（`~/.claude/projects/**/*.jsonl`）
-- 安全导出规划（预览模式）
-- 生成完整导出包，包含：
-  - `manifest.json`
-  - `checksums.sha256`
-  - 位于 `claude-code/projects/...` 的会话文件副本
-- 从导出包恢复到本地 Claude Code 存储（尽力恢复）
+- 面向普通用户设计，桌面界面即可完成全流程。
+- 不需要手动翻找隐藏目录或拼接文件路径。
+- 一键生成结构化导出包，便于迁移到新机器或新工作区。
+- 本地优先处理，数据可控。
 
-## 存储模型
+## 快速开始（无需命令行）
+
+1. 打开 CC Archive。
+2. 点击 `Scan` 扫描本地 Claude Code 会话。
+3. 确认扫描结果后点击 `Export`。
+4. 将导出包传到目标机器或目标账号使用的工作区。
+5. 在目标端使用 `Import Workspace` 或 `Restore` 恢复数据。
+
+## 你的数据会发生什么
+
+- 扫描与打包都在本机执行。
+- `Preview` 模式会先展示计划，不会直接写入文件。
+- 导出包默认保存在 `~/.cc-archive/exports`。
+- CC Archive 不要求上传到云端。
+
+## 导出包里包含什么
+
+- `manifest.json`：导出包摘要与元数据。
+- `checksums.sha256`：文件完整性校验信息。
+- `claude-code/projects/...`：可迁移的会话文件副本。
+
+## 当前能力
+
+- 多语言桌面界面（`en`、`zh-CN`）。
+- 扫描 Claude Code 本地会话（`~/.claude/projects/**/*.jsonl`）。
+- 先预览再导出的安全流程。
+- 基于导出包的恢复流程。
+
+## 已知限制
+
+CC Archive 处理的是 Claude Code 本地会话文件。将聊天记录直接导入到另一个 Claude 账号，目前并非 Anthropic 官方支持能力。
+
+## 可选高级设置
 
 - 默认归档根目录：`~/.cc-archive`
 - 默认导出目录：`~/.cc-archive/exports`
-- 导出目录命名格式：`YYYYMMDDTHHMMSSZ_<uuid>`
-
-可通过环境变量覆盖路径：
-
+- 导出目录格式：`YYYYMMDDTHHMMSSZ_<uuid>`
 - `CC_ARCHIVE_HOME`：自定义归档根目录
-- `CLAUDE_CONFIG_DIR`：自定义 Claude 配置根目录（会话路径应位于 `<CLAUDE_CONFIG_DIR>/projects`）
+- `CLAUDE_CONFIG_DIR`：自定义 Claude 配置根目录（`<CLAUDE_CONFIG_DIR>/projects`）
 
-## 官方支持边界
-
-CC Archive 支持导出与恢复本地 Claude Code 会话文件。  
-目前 Anthropic 官方尚未支持将聊天历史导入到另一个 Claude 账号。
-
-## 开发
+## 开发者说明
 
 开发模式运行：
 

@@ -20,61 +20,84 @@
   <img src="docs/assets/cc-archive-logo.png" alt="CC Archive Logo" width="180" />
 </p>
 
-CC Archive は、Claude Code と Codex のワークフロー間でメモリ/セッションデータをエクスポート・管理するための Wails デスクトップアプリ（Go + React/TypeScript）です。
+<p align="center">
+  <strong>Claude Code セッションを安全に持ち運べる、ローカル中心のバックアップツール。</strong><br/>
+  ローカル会話をスキャンし、内容を確認してから、復元可能なパッケージを数クリックで作成できます。
+</p>
 
 ## GIF プレビュー
 
 <!-- 日本語版 GIF に差し替えてください -->
 ![日本語 GIF プレースホルダー](docs/assets/preview-ja.gif)
 
-## 現在の機能（v1）
+## CC Archive を使う理由
 
-- i18n 対応ダッシュボード UI（`en`、`zh-CN`）
-- Claude Code のローカルセッションをスキャン（`~/.claude/projects/**/*.jsonl`）
-- 安全なエクスポート計画（プレビューモード）
-- 次を含む完全なエクスポートパッケージを生成：
-  - `manifest.json`
-  - `checksums.sha256`
-  - `claude-code/projects/...` 配下のセッションファイルのコピー
-- エクスポートパッケージからローカル Claude Code ストレージへの復元（ベストエフォート）
+- 一般ユーザー向けの分かりやすいデスクトップ UI。
+- 隠しフォルダを手動で探す必要がありません。
+- 移行しやすいエクスポートパッケージを簡単に作成。
+- ローカル優先で処理されるため、データ管理がしやすい。
 
-## ストレージモデル
+## クイックスタート（CLI不要）
 
-- 既定のアーカイブルート：`~/.cc-archive`
-- 既定のエクスポートディレクトリ：`~/.cc-archive/exports`
-- エクスポートフォルダ形式：`YYYYMMDDTHHMMSSZ_<uuid>`
+1. CC Archive を起動します。
+2. `Scan` をクリックしてローカルの Claude Code セッションを検出します。
+3. 内容を確認して `Export` を実行します。
+4. 作成されたパッケージを移行先マシンまたは移行先ワークスペースへ渡します。
+5. 移行先で `Import Workspace` または `Restore` を使って復元します。
 
-環境変数でパスを上書きできます：
+## データの扱い
 
-- `CC_ARCHIVE_HOME`：カスタムアーカイブルート
-- `CLAUDE_CONFIG_DIR`：カスタム Claude 設定ルート（セッションは `<CLAUDE_CONFIG_DIR>/projects` 配下を想定）
+- スキャンとパッケージ化はローカル環境で実行されます。
+- `Preview` モードで、書き込み前に実行内容を確認できます。
+- エクスポートパッケージの既定保存先は `~/.cc-archive/exports` です。
+- CC Archive 自体にクラウドアップロード必須の工程はありません。
 
-## 公式サポート範囲
+## エクスポートパッケージの中身
 
-CC Archive はローカル Claude Code セッションファイルのエクスポートと復元を扱います。  
-別の Claude アカウントへのチャット履歴インポートは、現時点で Anthropic による公式サポート対象ではありません。
+- `manifest.json`: パッケージの要約とメタデータ。
+- `checksums.sha256`: ファイル整合性の検証情報。
+- `claude-code/projects/...`: 移行用のセッションファイルコピー。
 
-## 開発
+## 現在できること
 
-開発モードで起動：
+- 多言語デスクトップ UI（`en`、`zh-CN`）。
+- Claude Code ローカルセッションのスキャン（`~/.claude/projects/**/*.jsonl`）。
+- プレビュー先行の安全なエクスポートフロー。
+- エクスポートパッケージからの復元フロー。
+
+## 既知の制限
+
+CC Archive は Claude Code のローカルセッションファイルを扱います。別の Claude アカウントへチャット履歴を直接インポートする機能は、現時点で Anthropic の公式サポート対象ではありません。
+
+## オプション設定（上級者向け）
+
+- 既定のアーカイブルート: `~/.cc-archive`
+- 既定のエクスポートディレクトリ: `~/.cc-archive/exports`
+- エクスポートフォルダ形式: `YYYYMMDDTHHMMSSZ_<uuid>`
+- `CC_ARCHIVE_HOME`: アーカイブルートを上書き
+- `CLAUDE_CONFIG_DIR`: Claude 設定ルートを上書き（`<CLAUDE_CONFIG_DIR>/projects`）
+
+## 開発者向け
+
+開発モードで起動:
 
 ```bash
 wails dev
 ```
 
-バックエンドテスト：
+バックエンドテスト:
 
 ```bash
 go test ./...
 ```
 
-フロントエンド資産のビルド：
+フロントエンド資産のビルド:
 
 ```bash
 cd frontend && npm run build
 ```
 
-配布向けアプリのビルド：
+配布向けアプリのビルド:
 
 ```bash
 wails build

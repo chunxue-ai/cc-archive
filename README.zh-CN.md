@@ -27,13 +27,12 @@
 
 ## 演示视频
 
-<p align="center">
-  <video src="docs/zh.mp4" controls preload="metadata" width="100%"></video>
-</p>
-
-<p align="center">
-  <a href="docs/zh.mp4">打开演示视频</a>
-</p>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/881f7b04-ac91-4315-ae98-283adfb8e019"
+         width="100%"
+         controls>
+  </video>
+</div>
 
 ## 为什么选择 CC Archive
 

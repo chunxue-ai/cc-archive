@@ -25,10 +25,15 @@
   Scan local conversations, review what will be exported, and create restore-ready packages in a few clicks.
 </p>
 
-## GIF Preview
+## Demo Video
 
-<!-- Replace this with your English GIF -->
-![English GIF Placeholder](docs/assets/preview-en.gif)
+<p align="center">
+  <video src="docs/en.mp4" controls preload="metadata" width="100%"></video>
+</p>
+
+<p align="center">
+  <a href="docs/en.mp4">Open demo video</a>
+</p>
 
 ## Why CC Archive
 

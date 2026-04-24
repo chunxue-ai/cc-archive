@@ -25,10 +25,15 @@
   ローカル会話をスキャンし、内容を確認してから、復元可能なパッケージを数クリックで作成できます。
 </p>
 
-## GIF プレビュー
+## デモ動画
 
-<!-- 日本語版 GIF に差し替えてください -->
-![日本語 GIF プレースホルダー](docs/assets/preview-ja.gif)
+<p align="center">
+  <video src="docs/en.mp4" controls preload="metadata" width="100%"></video>
+</p>
+
+<p align="center">
+  <a href="docs/en.mp4">デモ動画を開く</a>
+</p>
 
 ## CC Archive を使う理由
 

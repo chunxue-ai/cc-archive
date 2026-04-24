@@ -25,10 +25,15 @@
   扫描本地对话，先预览再导出，几步即可生成可恢复的归档包。
 </p>
 
-## GIF 预览
+## 演示视频
 
-<!-- 替换为简体中文 GIF -->
-![简体中文 GIF 占位](docs/assets/preview-zh-CN.gif)
+<p align="center">
+  <video src="docs/zh.mp4" controls preload="metadata" width="100%"></video>
+</p>
+
+<p align="center">
+  <a href="docs/zh.mp4">打开演示视频</a>
+</p>
 
 ## 为什么选择 CC Archive
 

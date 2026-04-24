@@ -162,8 +162,23 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $exePath = "build/bin/cc-archive.exe"
-          if (!(Test-Path $exePath)) { throw "Expected executable not found: $exePath" }
+          $candidatePaths = @(
+            "build/bin/cc-archive.exe",
+            "build/bin/cc-archive"
+          )
+
+          $exePath = $null
+          foreach ($candidate in $candidatePaths) {
+            if (Test-Path $candidate) {
+              $exePath = $candidate
+              break
+            }
+          }
+
+          if (-not $exePath) {
+            throw "Expected executable not found. Checked: $($candidatePaths -join ', ')"
+          }
+
           $packageName = "cc-archive_${env:RELEASE_VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip"
           Compress-Archive -Path $exePath -DestinationPath $packageName -Force
           "PACKAGE_NAME=$packageName" >> $env:GITHUB_ENV

@@ -27,13 +27,12 @@
 
 ## デモ動画
 
-<p align="center">
-  <video src="docs/en.mp4" controls preload="metadata" width="100%"></video>
-</p>
-
-<p align="center">
-  <a href="docs/en.mp4">デモ動画を開く</a>
-</p>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/eba0ebd3-ba77-45ce-9a33-1b579ea63221"
+         width="100%"
+         controls>
+  </video>
+</div>
 
 ## CC Archive を使う理由
 
